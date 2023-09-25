@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { FaEdit, FaTrash } from 'react-icons/fa';
 import AddProductButton from './AddProductButton'
+import '../Style/Product.scss'
+import UpdateProduct from './UpdateProduct';
 
 class ProductTable extends Component {
   constructor() {
     super();
     this.state = {
+      isOpen: false,
       products: [
         {
           id: 1,
@@ -24,7 +27,13 @@ class ProductTable extends Component {
       ],
     };
   }
+  openComponent = () => {
+    this.setState({ isOpen: true });
+  };
 
+  closeComponent = () => {
+    this.setState({ isOpen: false });
+  };
   handleUpdate(id) {
     console.log('Güncelleme: ', id);
   }
@@ -57,7 +66,10 @@ class ProductTable extends Component {
                   <td>{product.stock}</td>
                   <td>
                     {/* Güncelleme düğmesi ve FaEdit ikonu */}
-                    <button style={{ backgroundColor: 'orange' }} className="update-button" onClick={() => this.handleUpdate(product.id)}>
+                    <button style={{ backgroundColor: 'orange' }} className="update-button" onClick={() => {
+                      this.handleUpdate(product.id);
+                      this.openComponent();
+                    }}>
                       <FaEdit />
                     </button>
                     <button style={{ backgroundColor: 'red' }} className="delete-button" onClick={() => this.handleDelete(product.id)}><FaTrash /></button>
@@ -67,6 +79,7 @@ class ProductTable extends Component {
             </tbody>
           </table>
         </div>
+        {this.state.isOpen && <UpdateProduct onClose={this.closeComponent} />}
       </div>
     );
   }
