@@ -14,7 +14,7 @@ const UpdateProduct = () => {
                     />
                 </MDBCol>
                 <MDBCol>
-                    <MDBBtn className='me-1' color='warning'>
+                    <MDBBtn className='me-5' color='warning'>
                         Güncelle
                     </MDBBtn>
                 </MDBCol>

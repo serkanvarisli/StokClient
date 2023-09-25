@@ -73,7 +73,26 @@ class ProductForm extends Component {
                                 />
                             </MDBCol>
                         </MDBRow>
-                        <MDBBtn color="secondary" type="submit">
+                        <MDBRow className="mb-3">
+                            <MDBCol>
+                                <Form.Select aria-label="Default select example">
+                                    <option value={this.state.productCategory}>Etiket</option>
+                                </Form.Select>
+                            </MDBCol>
+
+                            <MDBCol>
+                                <Form.Select aria-label="Default select example">
+                                    <option value={this.state.productCategory}>Etiket</option>
+                                </Form.Select>
+                            </MDBCol>
+
+                            <MDBCol>
+                                <Form.Select aria-label="Default select example">
+                                    <option value={this.state.productCategory}>Etiket</option>
+                                </Form.Select>
+                            </MDBCol>
+                        </MDBRow>
+                        <MDBBtn color="success" type="submit">
                             Ürünü Ekle
                         </MDBBtn>
                     </form>
