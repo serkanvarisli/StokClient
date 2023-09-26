@@ -1,30 +1,23 @@
-import '../Style/App.scss';
-import React, { Component } from 'react';
+import styles from '../Style/App.scss';
+import React from 'react';
 import AddProduct from './AddProduct';
 import { FaPlus } from 'react-icons/fa';
 
+const AddProductButton = () => {
+    const [isHidden, setIsHidden] = React.useState(false);
 
-class App extends Component {
-    constructor() {
-        super();
-        this.state = {
-            isHidden: false, // Gizli başlangıçta false
-        };
-    }
-
-    toggleHidden = () => {
-        this.setState({ isHidden: !this.state.isHidden });
+    const toggleHidden = () => {
+        setIsHidden(!isHidden);
     };
 
-    render() {
-        return (
-            <div>
-                <button className="btn btn-primary" onClick={this.toggleHidden}>Ürün Ekle <FaPlus /></button>
-                {this.state.isHidden && <AddProduct />}
-                <p></p>
-            </div>
-        );
-    }
-}
+    return (
+        <div>
+            <button className="btn btn-primary" onClick={toggleHidden}>
+                Ürün Ekle <FaPlus />
+            </button>
+            {isHidden && <AddProduct />}
+        </div>
+    );
+};
 
-export default App;
+export default AddProductButton;
