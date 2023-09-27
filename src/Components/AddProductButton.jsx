@@ -16,6 +16,7 @@ const AddProductButton = () => {
                 Ürün Ekle <FaPlus />
             </button>
             {isHidden && <AddProduct />}
+            <p></p>
         </div>
     );
 };
