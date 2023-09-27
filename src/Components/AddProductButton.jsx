@@ -12,7 +12,7 @@ const AddProductButton = () => {
 
     return (
         <div>
-            <button className="btn btn-primary" onClick={toggleHidden}>
+            <button className="btn btn-secondary" onClick={toggleHidden}>
                 Ürün Ekle <FaPlus />
             </button>
             {isHidden && <AddProduct />}
