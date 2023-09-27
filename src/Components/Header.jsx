@@ -1,24 +1,36 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
+import React from 'react';
+import { Navbar, Container, Nav } from 'react-bootstrap';
+import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
+import HomePage from '../App';
+import LoginPage from '../Pages/Login';
 
-
-function Header() {
+function App() {
     return (
-        <div className='header'>
-            <Navbar expand="lg" className="bg-body-tertiary">
-                <Container>
-                    <Navbar.Brand href="index">Ürün Stok Yönetimi</Navbar.Brand>
-                    <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                    <Navbar.Collapse id="basic-navbar-nav">
-                        <Nav className="me-auto">
-                            <Nav.Link href='index'>Anasayfa</Nav.Link>
-                        </Nav>
-                    </Navbar.Collapse>
-                </Container>
-            </Navbar>
-        </div>
+        <Router>
+            <div className='header'>
+                <Navbar expand="lg" className="bg-body-tertiary">
+                    <Container>
+                        <Navbar.Brand as={Link} to="index">Ürün Stok Yönetimi</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="basic-navbar-nav">
+                            <span className={"fa fa-minus"}></span>
+                        </Navbar.Toggle>
+                        <Navbar.Collapse id="basic-navbar-nav">
+                            <Nav className="me-auto">
+                                <Nav.Link as={Link} to='index'>Anasayfa</Nav.Link>
+                            </Nav>
+                            <Nav>
+                                <Nav.Link as={Link} to='cikis'>Çıkış Yap</Nav.Link>
+                            </Nav>
+                        </Navbar.Collapse>
+                    </Container>
+                </Navbar>
+            </div>
+            <Routes>
+                <Route path="index" exact component={HomePage} />
+                <Route path="cikis" exact component={LoginPage} />
+            </Routes>
+        </Router>
     );
 }
 
-export default Header;
+export default App;

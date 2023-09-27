@@ -1,7 +1,7 @@
 import '../Style/App.scss';
 import React from 'react';
 import AddProduct from './AddProduct';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 
 const AddProductButton = () => {
     const [isHidden, setIsHidden] = React.useState(false);
@@ -13,7 +13,7 @@ const AddProductButton = () => {
     return (
         <div>
             <button className="btn btn-secondary" onClick={toggleHidden}>
-                Ürün Ekle <FaPlus />
+                {isHidden ? 'Ürün Ekle' : 'Ürün Ekle'} {isHidden ? <FaMinus /> : <FaPlus />}
             </button>
             {isHidden && <AddProduct />}
             <p></p>
