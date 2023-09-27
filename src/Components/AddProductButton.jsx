@@ -1,4 +1,4 @@
-import styles from '../Style/App.scss';
+import '../Style/App.scss';
 import React from 'react';
 import AddProduct from './AddProduct';
 import { FaPlus } from 'react-icons/fa';
