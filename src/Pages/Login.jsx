@@ -27,7 +27,7 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log('Giriş başarılı.');
-        navigate('/app', { state: { username } }); // State olarak username'i taşıyoruz
+        navigate('/app', { state: { username }, replace: true });
       } else {
         setError('Kullanıcı adı veya şifre hatalı.');
       }
