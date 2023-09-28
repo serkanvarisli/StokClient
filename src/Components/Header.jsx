@@ -9,7 +9,7 @@ function Header() {
         axios.post('https://localhost:7031/api/Login/logout')
             .then(response => {
                 if (response.status === 200) {
-                    navigate('/');
+                    navigate('/', { replace: true });
                     console.log("Çıkış basarılı");
                 } else {
                     console.error('Çıkış işlemi başarısız oldu');
