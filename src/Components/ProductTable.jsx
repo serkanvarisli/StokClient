@@ -4,12 +4,16 @@ import '../Style/Product.scss';
 import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import { useLocation, useNavigate } from 'react-router-dom';
+
 
 const ProductTable = () => {
   const [products, setProducts] = useState([]);
   const [editProductId, setEditProductId] = useState(null);
   const [newStock, setNewStock] = useState('');
-
+  const location = useLocation();
+  const { username } = location.state;
+  const isAdmin = username === 'admin';
   useEffect(() => {
     axios
       .get("https://localhost:7031/api/Products/")
@@ -85,7 +89,9 @@ const ProductTable = () => {
         console.error('API Hatası:', error);
       });
   };
-
+  const userSession = {
+    username: "admin",
+  };
   return (
     <div>
       <h1>Ürün Listesi</h1>
@@ -146,13 +152,15 @@ const ProductTable = () => {
                       >
                         <FaEdit />
                       </button>
-                      <button
-                        style={{ backgroundColor: 'red' }}
-                        className="delete-button"
-                        onClick={() => handleDelete(p.id)}
-                      >
-                        <FaTrash />
-                      </button>
+                      {isAdmin && (
+                        <button
+                          style={{ backgroundColor: 'red' }}
+                          className="delete-button"
+                          onClick={() => handleDelete(p.id)}
+                        >
+                          <FaTrash />
+                        </button>
+                      )}
                     </>
                   )}
                 </td>

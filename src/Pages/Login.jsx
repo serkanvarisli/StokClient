@@ -17,7 +17,6 @@ const Login = () => {
   };
 
   const navigate = useNavigate();
-
   const handleLogin = async () => {
     try {
       const { username, password } = formData;
@@ -28,7 +27,7 @@ const Login = () => {
 
       if (response.status === 200) {
         console.log('Giriş başarılı.');
-        navigate('/app', { replace: true });
+        navigate('/app', { state: { username } }); // State olarak username'i taşıyoruz
       } else {
         setError('Kullanıcı adı veya şifre hatalı.');
       }
