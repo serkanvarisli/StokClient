@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FaEdit, FaTrash, FaCheck, FaTimes } from 'react-icons/fa';
-import AddProductButton from './AddProductButton';
 import '../Style/Product.scss';
-import UpdateProduct from './UpdateProduct';
 import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';

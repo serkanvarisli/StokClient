@@ -1,36 +1,43 @@
+import axios from 'axios';
 import React from 'react';
 import { Navbar, Container, Nav } from 'react-bootstrap';
-import { BrowserRouter as Router, Route, Routes, Link } from 'react-router-dom';
-import HomePage from '../App';
-import LoginPage from '../Pages/Login';
+import { useNavigate } from 'react-router-dom';
 
-function App() {
+function Header() {
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        axios.post('https://localhost:7031/api/Login/logout')
+            .then(response => {
+                if (response.status === 200) {
+                    navigate('/');
+                    console.log("Çıkış basarılı");
+                } else {
+                    console.error('Çıkış işlemi başarısız oldu');
+                }
+            })
+            .catch(error => {
+                console.error('Hata:', error);
+            });
+    };
     return (
-        <Router>
-            <div className='header'>
-                <Navbar expand="lg" className="bg-body-tertiary">
-                    <Container>
-                        <Navbar.Brand as={Link} to="index">Ürün Stok Yönetimi</Navbar.Brand>
-                        <Navbar.Toggle aria-controls="basic-navbar-nav">
-                            <span className={"fa fa-minus"}></span>
-                        </Navbar.Toggle>
-                        <Navbar.Collapse id="basic-navbar-nav">
-                            <Nav className="me-auto">
-                                <Nav.Link as={Link} to='index'>Anasayfa</Nav.Link>
-                            </Nav>
-                            <Nav>
-                                <Nav.Link as={Link} to='cikis'>Çıkış Yap</Nav.Link>
-                            </Nav>
-                        </Navbar.Collapse>
-                    </Container>
-                </Navbar>
-            </div>
-            <Routes>
-                <Route path="index" exact component={HomePage} />
-                <Route path="cikis" exact component={LoginPage} />
-            </Routes>
-        </Router>
+        <div className='header'>
+            <Navbar expand="lg" className="bg-body-tertiary">
+                <Container>
+                    <Navbar.Brand>Ürün Stok Yönetimi</Navbar.Brand>
+                    <Navbar.Toggle aria-controls="basic-navbar-nav">
+                        <span className={"fa fa-minus"}></span>
+                    </Navbar.Toggle>
+                    <Navbar.Collapse id="basic-navbar-nav">
+                        <Nav className="me-auto">
+                            <Nav.Link>Anasayfa</Nav.Link>
+                        </Nav>
+                        <Nav>
+                            <Nav.Link onClick={handleLogout}>Çıkış Yap</Nav.Link>
+                        </Nav>
+                    </Navbar.Collapse>
+                </Container>
+            </Navbar>
+        </div >
     );
 }
-
-export default App;
+export default Header;
