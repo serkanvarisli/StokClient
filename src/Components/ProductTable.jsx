@@ -18,8 +18,17 @@ const ProductTable = () => {
   const isAdmin = username === 'admin';
 
   useEffect(() => {
+
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     axios
-      .get("https://localhost:7031/api/Products/")
+      .get("https://localhost:7031/api/Products/", config)
       .then((response) => {
         console.log("API Response:", response.data);
         setProducts(response.data);
@@ -42,12 +51,19 @@ const ProductTable = () => {
 
   const handleUpdate = (id) => {
     const existingProduct = products.find((product) => product.id === id);
+    const token = localStorage.getItem('token');
+    console.log(token);
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
     axios
       .put(`https://localhost:7031/api/Products/${id}`, {
         Stock: parseInt(newStock),
         Name: existingProduct.name,
         Description: existingProduct.description,
-      })
+      }, config)
       .then((response) => {
         console.log('Ürün stok güncellendi.', response.data);
         setProducts(products.map((product) => {

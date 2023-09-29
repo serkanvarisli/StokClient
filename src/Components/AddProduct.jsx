@@ -19,8 +19,15 @@ const AddProduct = () => {
     const formRef = useRef();
 
     useEffect(() => {
+        const token = localStorage.getItem('token');
+        console.log(token);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
         axios
-            .get("https://localhost:7031/api/Categories")
+            .get("https://localhost:7031/api/Categories", config)
             .then((response) => {
                 console.log("API Response:", response.data);
                 setCategories(response.data);
@@ -30,8 +37,15 @@ const AddProduct = () => {
             });
     }, []);
     useEffect(() => {
+        const token = localStorage.getItem('token');
+        console.log(token);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
         axios
-            .get("https://localhost:7031/api/Tags")
+            .get("https://localhost:7031/api/Tags", config)
             .then((response) => {
                 console.log("Tags API Response:", response.data);
                 setTags(response.data);
@@ -70,8 +84,15 @@ const AddProduct = () => {
         const categoryId = mapCategoryNameToId(selectedCategoryName).toString();
         const updatedProduct = { ...product, categoryId };
 
+        const token = localStorage.getItem('token');
+        console.log(token);
+        const config = {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        };
         axios
-            .post("https://localhost:7031/api/Products", updatedProduct)
+            .post("https://localhost:7031/api/Products", updatedProduct, config)
             .then((response) => {
                 window.location.reload();
                 console.log('Ürün Eklendi: ', response.data);
@@ -157,13 +178,14 @@ const AddProduct = () => {
                     <MDBRow className="mb-3">
                         <MDBCol>
                             <div className="form-group">
-                                <label htmlFor="tagNames" className="form-label">Etiketler</label>
+                                <label htmlFor="tagNames" className="form-label d-flex justify-content-start">Etiketler</label>
                                 <Select
                                     options={tags.map((tag) => ({
                                         value: tag.id,
                                         label: tag.name,
                                     }))}
                                     isMulti
+                                    placeholder="Etiket seç"
                                     onChange={handleTagSelection}
                                     value={selectedTags.map((tagId) => ({
                                         value: tagId,
