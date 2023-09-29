@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import axios from 'axios';
+import Select from 'react-select';
 
 const AddProduct = () => {
     const [product, setProduct] = useState({
@@ -12,6 +13,9 @@ const AddProduct = () => {
     });
     const [selectedCategoryName, setSelectedCategoryName] = useState('');
     const [categories, setCategories] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
+    const [tags, setTags] = useState([]);
+
     const formRef = useRef();
 
     useEffect(() => {
@@ -25,6 +29,18 @@ const AddProduct = () => {
                 console.error("API Error:", error);
             });
     }, []);
+    useEffect(() => {
+        axios
+            .get("https://localhost:7031/api/Tags")
+            .then((response) => {
+                console.log("Tags API Response:", response.data);
+                setTags(response.data);
+            })
+            .catch((error) => {
+                console.error("Tags API Error:", error);
+            });
+    }, []);
+
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -39,6 +55,13 @@ const AddProduct = () => {
     const mapCategoryNameToId = (name) => {
         const selectedCategory = categories.find(category => category.name === name);
         return selectedCategory ? selectedCategory.id : '';
+    };
+
+    const handleTagSelection = (selectedOptions) => {
+        const selectedTagIds = selectedOptions.map((option) => option.value);
+        setSelectedTags(selectedTagIds);
+        const selectedTagNames = selectedOptions.map((option) => option.label);
+        setProduct({ ...product, tagNames: selectedTagNames });
     };
 
     const handleSubmit = (e) => {
@@ -60,6 +83,7 @@ const AddProduct = () => {
                     stock: '',
                 });
                 setSelectedCategoryName('');
+                setSelectedTags([]);
             })
             .catch((error) => {
                 console.error("API Error:", error);
@@ -80,6 +104,7 @@ const AddProduct = () => {
                                 name="name"
                                 onChange={handleChange}
                                 value={product.name}
+                                required
                             />
                         </MDBCol>
                     </MDBRow>
@@ -107,7 +132,7 @@ const AddProduct = () => {
                                     onChange={(e) => setSelectedCategoryName(e.target.value)}
                                     value={selectedCategoryName}
                                 >
-                                    <option value="">Select Category</option>
+                                    <option value="">Kategori seç ..</option>
                                     {categories.map((category) => (
                                         <option key={category.id} value={category.name}>
                                             {category.name}
@@ -125,20 +150,30 @@ const AddProduct = () => {
                                 name="stock"
                                 onChange={handleChange}
                                 value={product.stock}
+                                required
                             />
                         </MDBCol>
                     </MDBRow>
                     <MDBRow className="mb-3">
                         <MDBCol>
-                            <MDBInput
-                                type="text"
-                                label="Etiket"
-                                name="tagNames"
-                                onChange={handleChange}
-                                value={product.tagNames.join(', ')}
-                            />
+                            <div className="form-group">
+                                <label htmlFor="tagNames" className="form-label">Etiketler</label>
+                                <Select
+                                    options={tags.map((tag) => ({
+                                        value: tag.id,
+                                        label: tag.name,
+                                    }))}
+                                    isMulti
+                                    onChange={handleTagSelection}
+                                    value={selectedTags.map((tagId) => ({
+                                        value: tagId,
+                                        label: tags.find((tag) => tag.id === tagId).name,
+                                    }))}
+                                />
+                            </div>
                         </MDBCol>
                     </MDBRow>
+
                     <MDBBtn color="success" type="submit">
                         Ekle
                     </MDBBtn>
