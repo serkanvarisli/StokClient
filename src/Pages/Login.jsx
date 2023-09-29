@@ -30,7 +30,7 @@ const Login = () => {
         console.log('Giriş başarılı.', { token });
 
         localStorage.setItem('token', token);
-        console.log("Giriş Başarılı")
+        console.log("Giriş Başarılı", username);
         navigate('/app', { state: { username }, replace: true });
       } else {
         setError('Kullanıcı adı veya şifre hatalı.');
