@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { MDBContainer, MDBRow, MDBCol, MDBInput, MDBBtn } from 'mdb-react-ui-kit';
 import axios from 'axios';
 
@@ -10,7 +10,22 @@ const AddProduct = () => {
         tagNames: [],
         stock: ''
     });
+    const [selectedCategoryName, setSelectedCategoryName] = useState('');
+    const [categories, setCategories] = useState([]);
     const formRef = useRef();
+
+    useEffect(() => {
+        axios
+            .get("https://localhost:7031/api/Categories")
+            .then((response) => {
+                console.log("API Response:", response.data);
+                setCategories(response.data);
+            })
+            .catch((error) => {
+                console.error("API Error:", error);
+            });
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         if (name === 'tagNames') {
@@ -21,11 +36,19 @@ const AddProduct = () => {
         }
     };
 
+    const mapCategoryNameToId = (name) => {
+        const selectedCategory = categories.find(category => category.name === name);
+        return selectedCategory ? selectedCategory.id : '';
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
 
+        const categoryId = mapCategoryNameToId(selectedCategoryName).toString();
+        const updatedProduct = { ...product, categoryId };
+
         axios
-            .post("https://localhost:7031/api/Products", product)
+            .post("https://localhost:7031/api/Products", updatedProduct)
             .then((response) => {
                 window.location.reload();
                 console.log('Ürün Eklendi: ', response.data);
@@ -36,11 +59,12 @@ const AddProduct = () => {
                     tagNames: [],
                     stock: '',
                 });
+                setSelectedCategoryName('');
             })
             .catch((error) => {
                 console.error("API Error:", error);
             });
-        console.log(product);
+        console.log(updatedProduct);
     };
 
     return (
@@ -76,13 +100,21 @@ const AddProduct = () => {
                     </MDBRow>
                     <MDBRow className="mb-3">
                         <MDBCol>
-                            <MDBInput
-                                type="number"
-                                label="Kategori"
-                                name="categoryId"
-                                onChange={handleChange}
-                                value={product.categoryId}
-                            />
+                            <div className="form-group">
+                                <select
+                                    className="form-control"
+                                    name="categoryId"
+                                    onChange={(e) => setSelectedCategoryName(e.target.value)}
+                                    value={selectedCategoryName}
+                                >
+                                    <option value="">Select Category</option>
+                                    {categories.map((category) => (
+                                        <option key={category.id} value={category.name}>
+                                            {category.name}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
                         </MDBCol>
                     </MDBRow>
                     <MDBRow className="mb-3">
