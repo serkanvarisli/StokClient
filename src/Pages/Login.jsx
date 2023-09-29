@@ -26,7 +26,11 @@ const Login = () => {
       });
 
       if (response.status === 200) {
-        console.log('Giriş başarılı.');
+        const token = response.data.accessToken;
+        console.log('Giriş başarılı.', { token });
+
+        localStorage.setItem('token', token);
+        console.log("Giriş Başarılı")
         navigate('/app', { state: { username }, replace: true });
       } else {
         setError('Kullanıcı adı veya şifre hatalı.');

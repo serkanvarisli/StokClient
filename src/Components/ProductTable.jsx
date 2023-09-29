@@ -4,7 +4,7 @@ import '../Style/Product.scss';
 import axios from 'axios';
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 
 
 const ProductTable = () => {
@@ -12,8 +12,11 @@ const ProductTable = () => {
   const [editProductId, setEditProductId] = useState(null);
   const [newStock, setNewStock] = useState('');
   const location = useLocation();
+
   const { username } = location.state;
+
   const isAdmin = username === 'admin';
+
   useEffect(() => {
     axios
       .get("https://localhost:7031/api/Products/")
@@ -75,23 +78,41 @@ const ProductTable = () => {
       ],
     });
   };
-
   const confirmDelete = (id) => {
+    const token = localStorage.getItem('token');
+    console.log(token);
+
+    const config = {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    };
+
     axios
-      .delete(`https://localhost:7031/api/Products/${id}`)
+      .delete(`https://localhost:7031/api/Products/${id}`, config)
       .then((response) => {
+        console.log(response);
         console.log('Ürün silindi.');
         setProducts((prevProducts) =>
           prevProducts.filter((product) => product.id !== id)
         );
       })
       .catch((error) => {
+        if (error.response) {
+          console.error(error.response.data);
+          console.error(error.response.status);
+          console.error(error.response.headers);
+        }
+        else if (error.request) {
+          console.error(error.request);
+        }
+        else {
+          console.error('Error', error.message);
+        }
         console.error('API Hatası:', error);
       });
   };
-  const userSession = {
-    username: "admin",
-  };
+
   return (
     <div>
       <h1>Ürün Listesi</h1>
